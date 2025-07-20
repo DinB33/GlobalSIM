@@ -1,76 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>GlobalSim - Login</title>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0f4f8;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .login-box {
-      background: white;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 16px;
-    }
-    button {
-      background-color: #007bff;
-      color: white;
-      border: none;
-    }
-    .error {
-      color: red;
-      margin-top: 10px;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - GlobalSim</title>
 </head>
 <body>
+  <h2>Login to GlobalSim</h2>
+  <form id="loginForm">
+    <input type="email" id="email" placeholder="Email" required /><br>
+    <input type="password" id="password" placeholder="Password" required /><br>
+    <button type="submit">Login</button>
+  </form>
 
-  <div class="login-box">
-    <h2>Login to GlobalSim</h2>
-    <input type="email" id="email" placeholder="Email" required />
-    <input type="password" id="password" placeholder="Password" required />
-    <button onclick="login()">Login</button>
-    <div class="error" id="error"></div>
-  </div>
+  <p id="loginStatus" style="color: red;"></p>
 
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
-  <script src="firebase.js"></script>
-  <script>
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  <!-- Firebase JS -->
+  <script type="module" src="firebase.js"></script>
 
-    const auth = getAuth();
+  <!-- Login Script -->
+  <script type="module">
+    const loginForm = document.getElementById("loginForm");
+    const status = document.getElementById("loginStatus");
 
-    function login() {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
-      const errorDiv = document.getElementById("error");
 
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Logged in successfully
-          window.location.href = "dashboard.html"; // Change to your dashboard page
-        })
-        .catch((error) => {
-          errorDiv.textContent = "Login failed: " + error.message;
-        });
-    }
+      try {
+        await window.signInWithEmailAndPassword(window.auth, email, password);
+        status.style.color = "green";
+        status.innerText = "Login successful!";
+        // Redirect to dashboard or home
+        window.location.href = "dashboard.html";
+      } catch (error) {
+        status.innerText = error.message;
+      }
+    });
   </script>
 </body>
 </html>
+
 
 
