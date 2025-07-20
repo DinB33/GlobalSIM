@@ -5,15 +5,13 @@
 </head>
 <body>
   <h2>Login</h2>
-  <form id="login-form">
-    <input type="email" id="email" placeholder="Email" required><br>
-    <input type="password" id="password" placeholder="Password" required><br>
-    <button type="submit">Login</button>
-  </form>
+  <input type="email" id="email" placeholder="Email"><br>
+  <input type="password" id="password" placeholder="Password"><br>
+  <button onclick="login()">Login</button>
 
-  <p id="message" style="color:red;"></p>
+  <p id="message"></p>
 
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -22,7 +20,7 @@
       apiKey: "AIzaSyAyHjcP2xbiv6FqxGT8bWQI-RkttS1LekA",
       authDomain: "globalsim-80108.firebaseapp.com",
       projectId: "globalsim-80108",
-      storageBucket: "globalsim-80108.firebasestorage.app",
+      storageBucket: "globalsim-80108.appspot.com",
       messagingSenderId: "577978389706",
       appId: "1:577978389706:web:ffb307cf23a00237da1033",
       measurementId: "G-KJV1E1ZL71"
@@ -31,25 +29,19 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    const form = document.getElementById('login-form');
-    const message = document.getElementById('message');
+    window.login = async function() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-
-      signInWithEmailAndPassword(auth, email, password)
-        .then((userCredential) => {
-          // Login successful
-          window.location.href = "dashboard.html"; // Redirect to dashboard
-        })
-        .catch((error) => {
-          message.textContent = error.message; // Show error message
-        });
-    });
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        document.getElementById("message").innerText = "✅ Logged in as " + userCredential.user.email;
+        // Redirect to dashboard
+        // window.location.href = "dashboard.html"; 
+      } catch (error) {
+        document.getElementById("message").innerText = "❌ " + error.message;
+      }
+    };
   </script>
 </body>
 </html>
-
