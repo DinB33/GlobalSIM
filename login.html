@@ -1,35 +1,55 @@
-
 <!DOCTYPE html>
 <html>
 <head>
   <title>Login</title>
-  <script type="module" src="firebase.js"></script>
 </head>
 <body>
   <h2>Login</h2>
-  <form id="loginForm">
+  <form id="login-form">
     <input type="email" id="email" placeholder="Email" required><br>
     <input type="password" id="password" placeholder="Password" required><br>
     <button type="submit">Login</button>
   </form>
 
-  <script type="module">
-    import { signInWithEmailAndPassword } from "./firebase.js";
+  <p id="message" style="color:red;"></p>
 
-    const form = document.getElementById("loginForm");
-    form.addEventListener("submit", (e) => {
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAyHjcP2xbiv6FqxGT8bWQI-RkttS1LekA",
+      authDomain: "globalsim-80108.firebaseapp.com",
+      projectId: "globalsim-80108",
+      storageBucket: "globalsim-80108.firebasestorage.app",
+      messagingSenderId: "577978389706",
+      appId: "1:577978389706:web:ffb307cf23a00237da1033",
+      measurementId: "G-KJV1E1ZL71"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form = document.getElementById('login-form');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
 
       signInWithEmailAndPassword(auth, email, password)
-        .then(() => {
-          window.location.href = "dashboard.html";
+        .then((userCredential) => {
+          // Login successful
+          window.location.href = "dashboard.html"; // Redirect to dashboard
         })
         .catch((error) => {
-          alert("Login failed: " + error.message);
+          message.textContent = error.message; // Show error message
         });
     });
   </script>
 </body>
 </html>
+
