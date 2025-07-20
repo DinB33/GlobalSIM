@@ -1,4 +1,3 @@
-
 // firebase.js
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-analytics.js";
@@ -12,7 +11,7 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// Firebase config
+// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAyHjcP2xbiv6FqxGT8bWQI-RkttS1LekA",
   authDomain: "globalsim-80108.firebaseapp.com",
@@ -33,9 +32,10 @@ setPersistence(auth, browserLocalPersistence)
   .then(() => console.log("Persistence set"))
   .catch((error) => console.error("Persistence error", error));
 
-// Make functions global
+// Make functions global for HTML usage
 window.auth = auth;
 window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
 window.signInWithEmailAndPassword = signInWithEmailAndPassword;
 window.onAuthStateChanged = onAuthStateChanged;
 window.signOut = signOut;
+
