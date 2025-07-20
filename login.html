@@ -1,46 +1,35 @@
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login - GlobalSim</title>
+  <title>Login</title>
+  <script type="module" src="firebase.js"></script>
 </head>
 <body>
-  <h2>Login to GlobalSim</h2>
+  <h2>Login</h2>
   <form id="loginForm">
-    <input type="email" id="email" placeholder="Email" required /><br>
-    <input type="password" id="password" placeholder="Password" required /><br>
+    <input type="email" id="email" placeholder="Email" required><br>
+    <input type="password" id="password" placeholder="Password" required><br>
     <button type="submit">Login</button>
   </form>
 
-  <p id="loginStatus" style="color: red;"></p>
-
-  <!-- Firebase JS -->
-  <script type="module" src="firebase.js"></script>
-
-  <!-- Login Script -->
   <script type="module">
-    const loginForm = document.getElementById("loginForm");
-    const status = document.getElementById("loginStatus");
+    import { signInWithEmailAndPassword } from "./firebase.js";
 
-    loginForm.addEventListener("submit", async (e) => {
+    const form = document.getElementById("loginForm");
+    form.addEventListener("submit", (e) => {
       e.preventDefault();
       const email = document.getElementById("email").value;
       const password = document.getElementById("password").value;
 
-      try {
-        await window.signInWithEmailAndPassword(window.auth, email, password);
-        status.style.color = "green";
-        status.innerText = "Login successful!";
-        // Redirect to dashboard or home
-        window.location.href = "dashboard.html";
-      } catch (error) {
-        status.innerText = error.message;
-      }
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          window.location.href = "dashboard.html";
+        })
+        .catch((error) => {
+          alert("Login failed: " + error.message);
+        });
     });
   </script>
 </body>
 </html>
-
-
-
