@@ -11,7 +11,6 @@
     <button type="submit">Login</button>
   </form>
 
-  <!-- Firebase login script -->
   <script type="module">
     import { auth, signInWithEmailAndPassword } from './firebase.js';
 
@@ -23,11 +22,10 @@
       signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
           alert("Login successful!");
-          window.location.href = "dashboard.html"; // or "admin.html"
+          window.location.href = "dashboard.html";
         })
         .catch((error) => {
           alert("Login failed: " + error.message);
-          console.error(error);
         });
     });
   </script>
